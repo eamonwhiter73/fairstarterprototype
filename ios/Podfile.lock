@@ -52,18 +52,18 @@ PODS:
   - FirebaseAnalytics (5.0.1):
     - FirebaseCore (~> 5.0)
     - FirebaseInstanceID (~> 3.0)
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
     - nanopb (~> 0.3)
   - FirebaseAuth (5.0.1):
     - FirebaseCore (~> 5.0)
     - GTMSessionFetcher/Core (~> 1.1)
   - FirebaseCore (5.0.4):
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
   - FirebaseCrash (3.0.0):
     - FirebaseAnalytics (~> 5.0)
     - FirebaseInstanceID (~> 3.0)
     - GoogleToolboxForMac/Logger (~> 2.1)
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
     - Protobuf (~> 3.5)
   - FirebaseDatabase (5.0.1):
     - FirebaseCore (~> 5.0)
@@ -97,7 +97,7 @@ PODS:
     - FirebaseSwizzlingUtilities/ISASwizzling (~> 2.0)
     - FirebaseSwizzlingUtilities/MethodSwizzling (~> 2.0)
     - GoogleToolboxForMac/Logger (~> 2.1)
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
     - GTMSessionFetcher/Core (~> 1.1)
     - Protobuf (~> 3.5)
   - FirebaseRemoteConfig (3.0.0):
@@ -105,7 +105,7 @@ PODS:
     - FirebaseAnalytics (~> 5.0)
     - FirebaseCore (~> 5.0)
     - FirebaseInstanceID (~> 3.0)
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
     - Protobuf (~> 3.5)
   - FirebaseStorage (3.0.0):
     - FirebaseCore (~> 5.0)
@@ -117,7 +117,7 @@ PODS:
   - GoogleToolboxForMac/Defines (2.1.4)
   - GoogleToolboxForMac/Logger (2.1.4):
     - GoogleToolboxForMac/Defines (= 2.1.4)
-  - "GoogleToolboxForMac/NSData+zlib (2.1.4)":
+  - GoogleToolboxForMac/NSData+zlib (2.1.4):
     - GoogleToolboxForMac/Defines (= 2.1.4)
   - gRPC (1.13.0):
     - gRPC-RxLibrary (= 1.13.0)
@@ -165,38 +165,6 @@ DEPENDENCIES:
   - Firebase/RemoteConfig (~> 5.3.0)
   - Firebase/Storage (~> 5.3.0)
 
-SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - BoringSSL
-    - Crashlytics
-    - Fabric
-    - Firebase
-    - FirebaseABTesting
-    - FirebaseAnalytics
-    - FirebaseAuth
-    - FirebaseCore
-    - FirebaseCrash
-    - FirebaseDatabase
-    - FirebaseDynamicLinks
-    - FirebaseFirestore
-    - FirebaseFunctions
-    - FirebaseInstanceID
-    - FirebaseMessaging
-    - FirebasePerformance
-    - FirebaseRemoteConfig
-    - FirebaseStorage
-    - FirebaseSwizzlingUtilities
-    - Google-Mobile-Ads-SDK
-    - GoogleToolboxForMac
-    - gRPC
-    - gRPC-Core
-    - gRPC-ProtoRPC
-    - gRPC-RxLibrary
-    - GTMSessionFetcher
-    - leveldb-library
-    - nanopb
-    - Protobuf
-
 SPEC CHECKSUMS:
   BoringSSL: cf3f1793eb6e3c445c4d150456341f149c268a35
   Crashlytics: 915a7787b84f635fb2a81f92a90e265c2c413f76
@@ -230,4 +198,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: e6d7a70446520929c99404aad6b659970b78b3da
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.4.0

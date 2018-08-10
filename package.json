@@ -1,5 +1,5 @@
 {
-  "name": "RNFirebaseStarter",
+  "name": "fairstarterprototype",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
@@ -23,7 +23,10 @@
   "dependencies": {
     "fbjs": "^0.8.17",
     "react": "^16.3.2",
-    "react-native": "^0.55.3",
-    "react-native-firebase": "^4.3.6"
+    "react-native": "^0.55.4",
+    "react-native-camera": "^1.2.0",
+    "react-native-firebase": "^4.3.6",
+    "react-navigation": "^2.11.2",
+    "scandit-react-native": "git+https://github.com/Scandit/barcodescanner-sdk-react-native.git"
   }
 }
