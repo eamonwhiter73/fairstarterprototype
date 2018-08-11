@@ -12,7 +12,7 @@ export default class Inventory extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Inventory',
+    title: 'Inventory Control',
   };
 
   state = {
@@ -71,6 +71,14 @@ export default class Inventory extends React.Component {
     return (
       <View style={{paddingTop: 15, paddingHorizontal: 15}}>
         <TouchableOpacity
+          style = {styles.sellcontainer}
+          onPress={() => {
+            navigate('BarcodeScanner', { mode: "sell"})
+          }}
+        >
+          <Text style = {styles.button}>SELL ITEM</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           style = {styles.container}
           onPress={() => {
             if(this.state.text != null) {
@@ -116,6 +124,12 @@ const styles = StyleSheet.create ({
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
+   },
+   sellcontainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 15
    },
    button: {
       borderWidth: 1,
