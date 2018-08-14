@@ -69,16 +69,6 @@ exports.addItem = functions.firestore
 		  }]
 		};
 
-		/*const variationKey = require('crypto').randomBytes(32).toString('hex');
-	    	var variationBody = {
-			  idempotency_key: variationKey,
-			  object: variation
-			};
-
-	    	api.upsertCatalogObject(variationBody)
-			  .then((response) => {
-			    console.log("Variation response: " + JSON.stringify(response));*/
-
 		// Upsert the catalog item
 		api.batchUpsertCatalogObjects(body)
 		  .then((response) => {
@@ -91,10 +81,6 @@ exports.addItem = functions.firestore
 
 			  	var dat = data;
 			    var locationId = dat.locations[0].id; // String | The ID of the item's associated location.
-
-				 // String | The ID of the variation to adjust inventory information for.
-
-				//var body = new SquareConnect.V1AdjustInventoryRequest(); // V1AdjustInventoryRequest | An object containing the fields to POST for the request.  See the corresponding object definition for field details.
 
 				var adjustBody = {
 					quantity_delta: Number(newValue.quantity),
@@ -111,4 +97,129 @@ exports.addItem = functions.firestore
 			});
 		  });
 		return null;
+    });
+
+exports.updateItem = functions.firestore
+    .document('items/{itemId}')
+    .onUpdate((change, context) => {
+        // Get an object representing the document
+        // e.g. {'name': 'Marie', 'age': 66}
+        const newValue = change.after.data();
+        const previousValue = change.before.data();
+
+        var params = {
+        	query: {
+        		exact_query: {
+        			attribute_name: "sku",
+        			attribute_value: newValue.barcode
+        		}
+        	}
+        }
+
+        api.searchCatalogObjects(params).then(function(data) {
+		    console.log('API called successfully in searchFor IDS. Returned data: ' + JSON.stringify(data));
+
+		    var dat = data;
+
+		    console.log("Version: " + dat.objects[0].version);
+
+		    var variationObj = dat.objects[0];
+		    
+		    variationObj.item_variation_data.price_money =  {amount: Number(newValue.price) * 100, currency: 'USD'};
+			
+			const idempotencyKey = require('crypto').randomBytes(32).toString('hex');
+	      	var body = {
+			  idempotency_key: idempotencyKey,
+			  object: variationObj
+			};
+
+
+	      	api.upsertCatalogObject(body).then(function(dataUpsert) {
+			    console.log('API called successfully in update from EditItem. Returned data: ' + JSON.stringify(dataUpsert));
+
+			    if(newValue.quantity != previousValue.quantity) {
+			  	
+				  	var res = dataUpsert;
+				  	var variationId = res.catalog_object.id;
+
+				    locationApi.listLocations().then(function(dataLocation) {
+					  console.log('API called successfully in locationApi. Returned data: ' + JSON.stringify(dataLocation));
+
+					  	var dat1 = dataLocation;
+					    var locationId = dat1.locations[0].id;
+					    console.log("Location ID: " + JSON.stringify(locationId));
+						 // String | The ID of the variation to adjust inventory information for.
+
+						//var body = new SquareConnect.V1AdjustInventoryRequest(); // V1AdjustInventoryRequest | An object containing the fields to POST for the request.  See the corresponding object definition for field details.
+						var delta = 0;
+						if(Number(newValue.quantity) > Number(previousValue.quantity)) {
+							delta = Number(newValue.quantity) - Number(previousValue.quantity);
+						}
+						else if(Number(newValue.quantity) < Number(previousValue.quantity)) {
+							delta = Number(-1 * (previousValue.quantity - (Number(previousValue.quantity) - Number(newValue.quantity))));
+						}
+						else {
+							delta = 0;
+						}
+						
+						var adjustBody = {
+							quantity_delta: delta,
+							adjustment_type: 'MANUAL_ADJUST'
+						}
+
+						inventoryApi.adjustInventory(locationId, variationId, adjustBody).then(function(dataInvent) {
+						    console.log('API called successfully in inventoryApi. Returned data: ' + JSON.stringify(dataInvent));
+
+						    if(newValue.description != previousValue.description) {
+
+						    	var params1 = {
+						        	query: {
+						        		exact_query: {
+						        			attribute_name: "name",
+						        			attribute_value: previousValue.barcode
+						        		}
+						        	}
+						        }
+						    	
+						    	api.searchCatalogObjects(params1).then(function(dataSearch) {
+								    console.log('API called successfully in searchFor IDS. Returned data: ' + JSON.stringify(dataSearch));
+
+								    var dat2 = dataSearch;
+
+								    console.log("ITEM ITEM: " + dat2.objects[0]);
+
+								    var itemObj = dat2.objects[0];
+
+								    itemObj.item_data.name = newValue.barcode;
+								    itemObj.item_data.description = newValue.description;
+									
+									const idempotencyKey1 = require('crypto').randomBytes(32).toString('hex');
+							      	var body1 = {
+									  idempotency_key: idempotencyKey1,
+									  object: itemObj
+									};
+
+									api.upsertCatalogObject(body1).then(function(dataUpsert2) {
+								    	console.log('API called successfully in update from upsertDescriptionOfItem. Returned data: ' + JSON.stringify(dataUpsert2));
+									}, function(error) {
+									  console.error(error);
+									});
+								});
+							}
+						}, function(error) {
+						  console.error(error);
+						});
+					}, function(error) {
+					  console.error(error);
+					});
+				}
+			}, function(error) {
+			  console.error(error);
+			});
+		    
+		}, function(error) {
+		  console.error(error);
+		});
+
+      return null;
     });

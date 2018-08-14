@@ -7,6 +7,8 @@ import Inventory from './components/Inventory'
 import EnterPrice from './components/EnterPrice'
 import SignUp from './components/SignUp'
 import LogIn from './components/LogIn'
+import EditItem from './components/EditItem'
+
 
 import { YellowBox } from 'react-native';
 YellowBox.ignoreWarnings(['Class RCTCxxModule']);
@@ -17,7 +19,8 @@ const App = createStackNavigator({
   SignUp: { screen: SignUp },
   Inventory: { screen: Inventory },
   BarcodeScanner: { screen: BarcodeScanner },
-  EnterPrice: { screen: EnterPrice }
+  EnterPrice: { screen: EnterPrice },
+  EditItem: { screen: EditItem }
 });
 
 export default App;

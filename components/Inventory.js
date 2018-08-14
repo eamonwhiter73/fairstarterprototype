@@ -92,9 +92,26 @@ export default class Inventory extends React.Component {
     this.authSubscription();
   }
 
+  edit = (item) => {
+    const { navigate } = this.props.navigation;
+
+    navigate('EditItem', { sku: item.barcode, description: item.description, quantity: item.quantity, price: item.price});
+  }
+
   myCallback = (item) => {
     if (item.email == this.state.user.email) {
-        return <View style={{flex: 1, flexDirection: 'row'}}><Text style={{marginTop: 10, flex: 0.8}}>SKU: {item.barcode} | Description: {item.description} | Quantity: {item.quantity} | Price: ${item.price}</Text><TouchableOpacity style = {styles.editcontainer} onPress={() => { /*this.submit()*/ }}><Text style = {styles.button}>EDIT</Text></TouchableOpacity></View>
+        return ( 
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <Text style={{marginTop: 10, flex: 0.8}}>SKU: {item.barcode} | Description: {item.description} | Quantity: {item.quantity} | Price: ${item.price}</Text>
+            <TouchableOpacity
+              style = {styles.editcontainer}
+              onPress={() => { 
+                this.edit(item)
+              }}>
+              <Text style = {styles.button}>EDIT</Text>
+            </TouchableOpacity>
+          </View>
+        )
     }
     else {
       return null
@@ -110,7 +127,7 @@ export default class Inventory extends React.Component {
     if (this.state.loading) return null;
 
     return (
-      <View style={{paddingTop: 15, paddingHorizontal: 15}}>
+      <View style={{paddingTop: 15, paddingHorizontal: 15, paddingBottom: 15}}>
         <TouchableOpacity
           style = {styles.container}
           onPress={() => {

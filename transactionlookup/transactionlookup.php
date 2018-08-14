@@ -27,7 +27,7 @@
 	//error_log($timestamp);
 	//error_log($location_id);
 
-	$ch1 = curl_init("https://connect.squareup.com/v1/".$location_id."/payments?begin_time=".rawurlencode($timestamp)."&end_time=".rawurlencode($date));
+	$ch1 = curl_init("https://connect.squareup.com/v1/".$location_id."/payments?begin_time=".rawurlencode($timestamp)."&end_time=".rawurlencode($date->format(DateTime::ATOM)));
 
 	curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch1, CURLOPT_HEADER, 0);
