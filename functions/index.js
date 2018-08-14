@@ -124,7 +124,7 @@ exports.updateItem = functions.firestore
 		    console.log("Version: " + dat.objects[0].version);
 
 		    var variationObj = dat.objects[0];
-		    
+
 		    variationObj.item_variation_data.price_money =  {amount: Number(newValue.price) * 100, currency: 'USD'};
 			
 			const idempotencyKey = require('crypto').randomBytes(32).toString('hex');
@@ -161,7 +161,7 @@ exports.updateItem = functions.firestore
 						else {
 							delta = 0;
 						}
-						
+
 						var adjustBody = {
 							quantity_delta: delta,
 							adjustment_type: 'MANUAL_ADJUST'
@@ -222,4 +222,49 @@ exports.updateItem = functions.firestore
 		});
 
       return null;
+    });
+
+exports.deleteItem = functions.firestore
+    .document('items/{itemId}')
+    .onDelete((snap, context) => {
+      // Get an object representing the document prior to deletion
+      // e.g. {'name': 'Marie', 'age': 66}
+      const deletedValue = snap.data();
+
+      var params1 = {
+        query: {
+          exact_query: {
+            attribute_name: "sku",
+            attribute_value: deletedValue.barcode
+          }
+        }
+      }
+                  
+      api.searchCatalogObjects(params1).then(function(dataSearch) {
+        console.log('API called successfully in searchFor IDS. Returned data: ' + JSON.stringify(dataSearch));
+
+        var dat = dataSearch;
+
+        console.log("Version: " + dat.objects[0].version);
+
+        var variationObj = dat.objects[0];
+
+        var objectId = variationObj.id; // String | The ID of the [CatalogObject](#type-catalogobject) to be deleted. When an object is deleted, other objects in the graph that depend on that object will be deleted as well (for example, deleting a [CatalogItem](#type-catalogitem) will delete its [CatalogItemVariation](#type-catalogitemvariation)s).
+
+        api.deleteCatalogObject(objectId).then(function(data) {
+          console.log('Delete API called successfully on Variation. Returned data: ' + data);
+          api.deleteCatalogObject(variationObj.item_variation_data.item_id).then(function(data) {
+            console.log('Delete API called successfully on Item. Returned data: ' + data);
+            const { navigate } = this.props.navigation;
+
+            navigate('Inventory');
+          }, function(error) {
+            Alert.alert(error);
+          });
+        }, function(error) {
+          Alert.alert(error);
+        });
+      });
+
+      // perform desired operations ...
     });

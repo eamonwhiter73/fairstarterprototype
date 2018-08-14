@@ -50,30 +50,7 @@ export default class EditItem extends React.Component {
                   price: this.state.price,
                   quantity: this.state.quantity
               });
-
-              /*firebase
-              .firestore()
-              .runTransaction(async transaction => {
-                const doc = await transaction.get(ref);
-
-                transaction.update(snap._docs[0]._ref, {
-                  description: this.state.description,
-                  price: this.state.price,
-                  quantity: this.state.quantity
-                });
-
-                // return the new value so we know what the new population is
-              })
-              .then(() => {
-                console.log(
-                  "Successfully done."
-                );
-              })
-              .catch(error => {
-                console.log('Transaction failed: ', error);
-              });*/
-            });
-            
+            });      
             
           }},
         ],
@@ -81,7 +58,15 @@ export default class EditItem extends React.Component {
       )
     }
   }
-  
+
+  deleteItem = () => {
+    const ref = firebase.firestore().collection('items').where("barcode", "==", this.state.sku);
+
+    ref.onSnapshot((snap) => {
+      console.log(snap);
+      snap._changes[0]._document._ref.delete().catch((error) => {Alert.alert(error)});
+    }); 
+  }  
 
   render() {
     return (
@@ -120,6 +105,14 @@ export default class EditItem extends React.Component {
           }}
         >
           <Text style = {styles.button}>SAVE</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style = {styles.container}
+          onPress={() => {
+            this.deleteItem()
+          }}
+        >
+          <Text style = {styles.button}>DELETE</Text>
         </TouchableOpacity>
       </View>
     );

@@ -28,6 +28,7 @@
     "react-native-deep-linking": "^2.1.0",
     "react-native-device-info": "^0.22.3",
     "react-native-firebase": "^4.3.6",
-    "react-navigation": "^2.11.2"
+    "react-navigation": "^2.11.2",
+    "square-connect": "^2.20180712.1"
   }
 }
