@@ -64,7 +64,12 @@ export default class EditItem extends React.Component {
 
     ref.onSnapshot((snap) => {
       console.log(snap);
-      snap._changes[0]._document._ref.delete().catch((error) => {Alert.alert(error)});
+      snap._changes[0]._document._ref.delete().then(() => {
+        const { navigate } = this.props.navigation;
+
+        navigate('Inventory');
+      })
+      .catch((error) => {Alert.alert(error)});
     }); 
   }  
 
