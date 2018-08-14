@@ -59,6 +59,7 @@ export default class InventoryList extends React.Component {
           <Text style={{flex: 1, fontWeight: 'bold', textDecorationLine: 'underline', fontSize: 16, textAlign: 'center'}}>Added Items</Text>
         </View>
         <FlatList
+          style={{paddingBottom: 1}}
           data={this.state.items}
           renderItem={({item}) => this.props.callback(item)}
         />

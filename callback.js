@@ -51,7 +51,52 @@ $(document).ready(function() {
 
 		url.search = new URLSearchParams(params);
 
-		fetch(url).then(res => {}).catch(error=>{alert("Error: " + error)});
+		fetch(url, {
+			method: 'GET',
+			headers: {
+			    Accept: 'application/json',
+			}
+		}).then(response => {
+		  if (response.ok) {
+		    response.json().then(json => {
+		        alert(json.data);
+
+		    	var quant = 0;
+		    	var itemsRef = db.collection('items');
+				var query = itemsRef.where('barcode', '==', String(json.data)).get()
+				    .then(snapshot => {
+
+				      snapshot.forEach(doc => {
+				        quant = Number(doc.data().quantity);
+				        
+				        var newVal = Number(quant) - 1;
+				    	
+				    	itemsRef.doc(doc.id).update({
+						    quantity: newVal
+						})
+						.then(function() {
+						    alert("Quantity successfully updated!");
+						})
+						.catch(function(error) {
+						    alert("Error writing document: ", error);
+						});
+				      })
+				    })
+				    /*.then((val) => {
+				      	
+				    })*/
+				    .catch(err => {
+				      alert('Error getting documents ' + JSON.stringify(err));
+				    });
+		    });
+		  }
+		  else {
+		  	alert("Response is not ok.");
+		  }
+		})
+		.catch(error=> {
+			alert("Error: " + error);
+		});
 
 	    /*fetch(url)
 	    	.then(data => data.json())

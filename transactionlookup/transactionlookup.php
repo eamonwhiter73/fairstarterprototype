@@ -1,6 +1,33 @@
 <?php
+	header('Content-Type: application/json');
+	
+	function json_response($message = null, $code = 200)
+	{
+	    // clear the old headers
+	    header_remove();
+	    // set the actual code
+	    http_response_code($code);
+	    // set the header to make sure cache is forced
+	    header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
+	    // treat this as json
+	    header('Content-Type: application/json');
+	    $status = array(
+	        200 => '200 OK',
+	        400 => '400 Bad Request',
+	        422 => 'Unprocessable Entity',
+	        500 => '500 Internal Server Error'
+	        );
+	    // ok, validation error, or failure
+	    header('Status: '.$status[$code]);
+	    // return the encoded json
+	    return json_encode(array(
+	        'status' => $code < 300, // success or not?
+	        'message' => $message
+	        ));
+	}
+
 	$id = $_GET['id'];
-	error_log($id, 3, "error_log");
+	//error_log($id, 3, "error_log");
 
 	$header = array();
 	$header[] = 'Authorization: Bearer sq0atp-on5KcHDr0dhlbefU0EwVwg';
@@ -15,7 +42,7 @@
 	$data = curl_exec($ch);
 	curl_close($ch);
 
-	error_log($data);
+	//error_log($data);
 
 	$array = json_decode($data, true);
 	$timestamp = $array['transaction']['created_at'];
@@ -36,7 +63,7 @@
 	$data1 = curl_exec($ch1);
 	curl_close($ch1);
 
-	error_log($data1);
+	//error_log($data1);
 
 	/*THIS NEEDS TO WORK WHEN MULTIPLE SALES HAPPEN IN THE SAME SECOND - PARSE THROUGH AND CHECK ALL PAYMENT TENDER IDS AGAINST TRANSACTION TENDER IDS*/
 	
@@ -95,7 +122,7 @@
 		curl_close ($ch2);
 
 		// Further processing ...
-		error_log($server_output);
+		//error_log($server_output);
 
 		$array2 = json_decode($server_output, true);
 
@@ -124,7 +151,9 @@
 
 		curl_close ($ch3);
 
-		// Further processing ...
-		error_log($server_output2);
+		$arr = array();
+		$arr['data'] = $sku;
+
+		echo json_encode($arr);
 	}
 ?>
