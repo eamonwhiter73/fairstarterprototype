@@ -24,7 +24,7 @@ export default class EditItem extends React.Component {
       sku: this.props.navigation.state.params.sku,
       description: this.props.navigation.state.params.description,
       price: this.props.navigation.state.params.price,
-      quantity: this.props.navigation.state.params.quantity
+      quantity: String(this.props.navigation.state.params.quantity)
     })
   }
 
