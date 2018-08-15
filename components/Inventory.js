@@ -122,6 +122,10 @@ export default class Inventory extends React.Component {
     return this.state.user.email
   }
 
+  searchSkuFunc = () => {
+    return this.props.navigation.state.params.skuForSearch;
+  }
+
   render() {
     // The application is initialising
     if (this.state.loading) return null;
@@ -165,7 +169,12 @@ export default class Inventory extends React.Component {
             <Text style = {styles.button}>ADD ITEM</Text>
           </TouchableOpacity>
         </View>
-        <InventoryList callback={this.myCallback} returnemail={this.returnEmail}/>
+        <InventoryList
+          callback={this.myCallback}
+          returnemail={this.returnEmail}
+          searchSku={this.searchSkuFunc.bind(this)}
+          navigation={this.props.navigation.navigate}
+        />
         <TouchableOpacity
           style = {styles.sellcontainer}
           onPress={() => {

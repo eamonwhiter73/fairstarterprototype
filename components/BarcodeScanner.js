@@ -114,6 +114,9 @@ export default class BarcodeScanner extends React.Component {
             console.log("Error getting documents: ", error);
         });
     }
+    else if(this.props.navigation.state.params.mode == "forSearch") {
+      navigate('Inventory', { skuForSearch: `${data}`});
+    }
     else {
       navigate('EnterPrice', { forFromPrice: this.props.navigation.state.params.forFromPrice, onNavigateBack: this.props.navigation.state.params.onNavigateBack, data: data })
     }
