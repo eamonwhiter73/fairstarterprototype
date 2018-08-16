@@ -14,9 +14,17 @@ export default class EnterPrice extends React.Component {
   submitEdit = () => {
     const { navigate } = this.props.navigation;
     
+
     this.props.navigation.state.params.forFromPrice(this.state.text);
-    this.props.navigation.state.params.onNavigateBack(`${this.props.navigation.state.params.data}`);
-    navigate('Inventory');
+    
+    if(this.props.navigation.state.params.mode != "fromEnterSku") {
+      this.props.navigation.state.params.onNavigateBack(`${this.props.navigation.state.params.data}`);
+    }
+    else {
+      this.props.navigation.state.params.onNavigateBack(this.props.navigation.state.params.sku);
+    }
+    
+    navigate('Inventory', { mode: "fromPrice" });
   }
 
   render() {

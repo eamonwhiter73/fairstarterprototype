@@ -24,6 +24,7 @@ export default class InventoryList extends React.Component {
   }
 
   componentWillMount() {
+    //EVENTUALLY RECEIVE THIS FROM PARENT INVENTORY COMPONENT//
     this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
       this.setState({
         loading: false,
@@ -148,6 +149,7 @@ export default class InventoryList extends React.Component {
   }
 
   componentWillReceiveProps(props) {
+    console.log(props);
     this.setState({searchText: props.searchSku()});
   }
 
@@ -159,7 +161,7 @@ export default class InventoryList extends React.Component {
     return (
       <View style={{marginTop: 15}}>
         <View style={{flexDirection: 'row', marginBottom: 10}}>
-          <Text style={{flex: 1, fontWeight: 'bold', textDecorationLine: 'underline', fontSize: 16, textAlign: 'center'}}>Added Items</Text>
+          <Text style={{flex: 1, fontWeight: 'bold', textDecorationLine: 'underline', fontSize: 16, textAlign: 'center'}}>Inventory</Text>
         </View>
         <View style={{flexDirection: 'row'}}>
           <SearchBar
@@ -183,6 +185,7 @@ export default class InventoryList extends React.Component {
           style={{paddingBottom: 1}}
           data={this.state.items}
           renderItem={({item}) => this.props.callback(item)}
+          contentContainerStyle={{marginBottom: -49}}
         />
       </View>
     );

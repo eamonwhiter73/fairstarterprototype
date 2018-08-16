@@ -1,6 +1,6 @@
 import React from 'react';
 import { RNCamera } from 'react-native-camera';
-import { StyleSheet, Text, View, Alert, Permissions, Linking } from 'react-native';
+import { StyleSheet, Text, View, Alert, Permissions, Linking, TouchableOpacity } from 'react-native';
 import firebase from 'react-native-firebase';
 import DeepLinking from 'react-native-deep-linking';
 
@@ -46,6 +46,27 @@ export default class BarcodeScanner extends React.Component {
     });
   }
 
+  ifForSearch = () => {
+    if(this.props.navigation.state.params.mode != 'forSearch') {
+      return (
+        <TouchableOpacity
+          style = {styles.manualcontainer}
+          onPress={() => {
+            const { navigate } = this.props.navigation;
+            if(this.props.navigation.state.params.mode == 'sell') {
+              navigate('EnterSku', { mode: 'sell' });
+            }
+            else {
+              navigate('EnterSku', { forFromPrice: this.props.navigation.state.params.forFromPrice, onNavigateBack: this.props.navigation.state.params.onNavigateBack});
+            }
+          }}
+        >
+          <Text style = {styles.button}>MANUAL ENTRY</Text>
+        </TouchableOpacity>
+      )
+    }
+  }
+
   render() {
     if(this.state.showCamera) {
       return (
@@ -61,6 +82,7 @@ export default class BarcodeScanner extends React.Component {
               permissionDialogMessage={'We need your permission to use your camera phone'}
               onBarCodeRead={this._handleBarCodeRead.bind(this)}
           />
+          {this.ifForSearch()}
         </View>
       );
     }
@@ -107,7 +129,9 @@ export default class BarcodeScanner extends React.Component {
                   }
                 };
                 
-                Linking.openURL("square-commerce-v1://payment/create?data=" + encodeURIComponent(JSON.stringify(dataParameter))).catch(err => console.log('There was an error:' + err));
+                Linking.openURL("square-commerce-v1://payment/create?data=" + encodeURIComponent(JSON.stringify(dataParameter))).then(() => {
+                  navigate('Inventory');
+                }).catch(err => console.log('There was an error:' + err));
             });
         })
         .catch(function(error) {
@@ -115,7 +139,7 @@ export default class BarcodeScanner extends React.Component {
         });
     }
     else if(this.props.navigation.state.params.mode == "forSearch") {
-      navigate('Inventory', { skuForSearch: `${data}`});
+      navigate('Inventory', { skuForSearch: `${data}`, mode: "forSearch" });
     }
     else {
       navigate('EnterPrice', { forFromPrice: this.props.navigation.state.params.forFromPrice, onNavigateBack: this.props.navigation.state.params.onNavigateBack, data: data })
@@ -138,5 +162,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center'
+  },
+  manualcontainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+  },
+  button: {
+      borderWidth: 1,
+      padding: 10,
+      borderColor: 'black',
+      flex: 1,
+      textAlign: 'center',
+      color: 'blue',
+      backgroundColor: '#aaa'
   }
 });

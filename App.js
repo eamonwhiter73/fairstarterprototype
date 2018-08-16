@@ -3,11 +3,13 @@ import {
 } from 'react-navigation';
 
 import BarcodeScanner from './components/BarcodeScanner';
-import Inventory from './components/Inventory'
-import EnterPrice from './components/EnterPrice'
-import SignUp from './components/SignUp'
-import LogIn from './components/LogIn'
-import EditItem from './components/EditItem'
+import Inventory from './components/Inventory';
+import EnterPrice from './components/EnterPrice';
+import SignUp from './components/SignUp';
+import LogIn from './components/LogIn';
+import EditItem from './components/EditItem';
+import EnterSku from './components/EnterSku';
+
 
 
 import { YellowBox } from 'react-native';
@@ -20,6 +22,7 @@ const App = createStackNavigator({
   Inventory: { screen: Inventory },
   BarcodeScanner: { screen: BarcodeScanner },
   EnterPrice: { screen: EnterPrice },
+  EnterSku: { screen: EnterSku },
   EditItem: { screen: EditItem }
 });
 

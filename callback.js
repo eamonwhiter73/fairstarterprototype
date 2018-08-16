@@ -59,7 +59,6 @@ $(document).ready(function() {
 		}).then(response => {
 		  if (response.ok) {
 		    response.json().then(json => {
-		        alert(json.data);
 
 		    	var quant = 0;
 		    	var itemsRef = db.collection('items');
@@ -75,7 +74,7 @@ $(document).ready(function() {
 						    quantity: newVal
 						})
 						.then(function() {
-						    alert("Quantity successfully updated!");
+						    alert("Quantity successfully updated! Please return to Fairstarter!");
 						})
 						.catch(function(error) {
 						    alert("Error writing document: ", error);
@@ -153,6 +152,12 @@ $(document).ready(function() {
 
 	  if (errorField in transactionInfo) {
 	    resultString += "Error: " + JSON.stringify(transactionInfo[errorField])+ "<br>";
+	    if(transactionInfo[errorField] == "not_logged_in") {
+	    	alert("Please open the Square POS app and login, and then return to Fairstarter and redo the transaction.");
+	    }
+	    else if(transactionInfo[errorField] == "payment_canceled") {
+	    	alert("Transaction cancelled. Please return to Fairstarter to initiate another transaction.");
+	    }
 	  }
 	  if (transactionId in transactionInfo) {
 	    resultString += "Transaction ID: " + transactionInfo[transactionId] + "<br>";

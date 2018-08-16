@@ -123,7 +123,11 @@ export default class Inventory extends React.Component {
   }
 
   searchSkuFunc = () => {
-    return this.props.navigation.state.params.skuForSearch;
+    if(this.props.navigation.state.params.mode == 'forSearch') {
+      return this.props.navigation.state.params.skuForSearch;
+    }
+    
+    return;
   }
 
   render() {
@@ -131,50 +135,52 @@ export default class Inventory extends React.Component {
     if (this.state.loading) return null;
 
     return (
-      <View style={{paddingTop: 15, paddingHorizontal: 15, paddingBottom: 15}}>
-        <TouchableOpacity
-          style = {styles.container}
-          onPress={() => {
-            const { navigate } = this.props.navigation;
-
-            if(this.state.text != null) {
-              navigate('BarcodeScanner', { onNavigateBack: this.changeData.bind(this), forFromPrice: this.changePrice.bind(this) })}
-            }
-          }
-        >
-          <Text style = {styles.button}>SCAN ITEM</Text>
-        </TouchableOpacity>
-        <Text style={{}}>{'\n'}Item #: {this.state.text} | Price: ${this.state.price}{"\n"}</Text>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{marginTop: 10}}>Description: </Text>
-          <TextInput
-            style={{height: 40, borderColor: 'gray', borderWidth: 1, flex: 0.74, marginRight: 15, backgroundColor: '#ffffff'}}
-            onChangeText={(text) => this.setState({description: text})}
-            value={this.state.description}
-          />
-          <Text style={{marginTop: 10}}>Quantity: </Text>
-          <TextInput
-            style={{height: 40, borderColor: 'gray', borderWidth: 1, flex: 0.26, backgroundColor: '#ffffff'}}
-            onChangeText={(text) => this.setState({quantity: text})}
-            value={this.state.quantity}
-          />
-        </View>
-        <View style={{paddingTop: 15}}>
+      <View style={{paddingTop: 15, paddingHorizontal: 15, paddingBottom: 15, flex: 1}}>
+        <View style={{flex: 1}}>
           <TouchableOpacity
             style = {styles.container}
             onPress={() => {
-              this.submit()
-            }}
+              const { navigate } = this.props.navigation;
+
+              if(this.state.text != null) {
+                navigate('BarcodeScanner', { onNavigateBack: this.changeData.bind(this), forFromPrice: this.changePrice.bind(this) })}
+              }
+            }
           >
-            <Text style = {styles.button}>ADD ITEM</Text>
+            <Text style = {styles.button}>SCAN ITEM</Text>
           </TouchableOpacity>
+          <Text style={{}}>{'\n'}Item #: {this.state.text} | Price: ${this.state.price}{"\n"}</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{marginTop: 10}}>Description: </Text>
+            <TextInput
+              style={{height: 40, borderColor: 'gray', borderWidth: 1, flex: 0.74, marginRight: 15, backgroundColor: '#ffffff'}}
+              onChangeText={(text) => this.setState({description: text})}
+              value={this.state.description}
+            />
+            <Text style={{marginTop: 10}}>Quantity: </Text>
+            <TextInput
+              style={{height: 40, borderColor: 'gray', borderWidth: 1, flex: 0.26, backgroundColor: '#ffffff'}}
+              onChangeText={(text) => this.setState({quantity: text})}
+              value={this.state.quantity}
+            />
+          </View>
+          <View style={{paddingTop: 15}}>
+            <TouchableOpacity
+              style = {styles.container}
+              onPress={() => {
+                this.submit()
+              }}
+            >
+              <Text style = {styles.button}>ADD ITEM</Text>
+            </TouchableOpacity>
+          </View>
+          <InventoryList
+            callback={this.myCallback}
+            returnemail={this.returnEmail}
+            searchSku={this.searchSkuFunc.bind(this)}
+            navigation={this.props.navigation.navigate}
+          />
         </View>
-        <InventoryList
-          callback={this.myCallback}
-          returnemail={this.returnEmail}
-          searchSku={this.searchSkuFunc.bind(this)}
-          navigation={this.props.navigation.navigate}
-        />
         <TouchableOpacity
           style = {styles.sellcontainer}
           onPress={() => {
@@ -200,7 +206,7 @@ const styles = StyleSheet.create ({
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      marginTop: 15
+      height: 40
    },
    editcontainer: {
       justifyContent: 'center',
