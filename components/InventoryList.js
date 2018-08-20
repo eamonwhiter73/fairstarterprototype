@@ -165,7 +165,7 @@ export default class InventoryList extends React.Component {
     }
 
     return (
-      <View style={{marginTop: 15}}>
+      <View style={{marginTop: 15, flex: 0.99}}>
         <View style={{flexDirection: 'row', marginBottom: 10}}>
           <Text style={{flex: 1, fontWeight: 'bold', textDecorationLine: 'underline', fontSize: 16, textAlign: 'center'}}>Inventory</Text>
         </View>
@@ -191,7 +191,7 @@ export default class InventoryList extends React.Component {
           style={{paddingBottom: 1}}
           data={this.state.items}
           renderItem={({item}) => this.props.callback(item)}
-          //contentContainerStyle={{marginBottom: Platform.OS === 'ios' ? -49 : 0}}
+          contentContainerStyle={{justifyContent: 'flex-end'}}
         />
       </View>
     );
