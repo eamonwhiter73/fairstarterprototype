@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View, Button, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, FlatList, TouchableOpacity, Platform } from 'react-native';
 import firebase from 'react-native-firebase';
 import { SearchBar } from 'react-native-elements'
 
@@ -55,12 +55,13 @@ export default class InventoryList extends React.Component {
           quantity
         });
       }
-    });
+    })
 
     this.setState({ 
       items,
       loading: false
-    });
+    })
+
   }
 
   search = () => {
@@ -72,7 +73,7 @@ export default class InventoryList extends React.Component {
           var searchObjs = [];
           querySnapshot.forEach(function(doc) {
               // doc.data() is never undefined for query doc snapshots
-              console.log(doc.id, " => THIS IS FROM SEARCH FUNCTAION => ", doc.data());
+              console.log(doc.id, " => THIS IS FROM SEARCH FUNCTION => ", doc.data());
               const { barcode, description, email, price, quantity } = doc.data();
               //console.log("Searchtext: " + this.state.searchText);
               if(doc.data().barcode.includes(self.state.searchText)) {
@@ -88,8 +89,9 @@ export default class InventoryList extends React.Component {
                 });
                 
               }
-
               else if(doc.data().description.includes(self.state.searchText)) {
+
+                console.log("in includes");
 
                 searchObjs.push({
                   key: doc.id,
@@ -99,12 +101,16 @@ export default class InventoryList extends React.Component {
                   email,
                   price,
                   quantity
-                });
-                
+                });                
               }
           });
 
-          self.setState({items: searchObjs});
+          return searchObjs;
+          //self.setState({items: searchObjs});
+      })
+      .then((obj) => {
+        this.setState({items: obj});
+        console.log(this.state.items);
       })
       .catch(function(error) {
           console.log("Error getting documents: ", error);
@@ -185,7 +191,7 @@ export default class InventoryList extends React.Component {
           style={{paddingBottom: 1}}
           data={this.state.items}
           renderItem={({item}) => this.props.callback(item)}
-          contentContainerStyle={{marginBottom: -49}}
+          //contentContainerStyle={{marginBottom: Platform.OS === 'ios' ? -49 : 0}}
         />
       </View>
     );

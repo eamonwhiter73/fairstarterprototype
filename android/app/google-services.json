@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "736108062496",
+    "firebase_url": "https://fairstarterprototype.firebaseio.com",
+    "project_id": "fairstarterprototype",
+    "storage_bucket": "fairstarterprototype.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736108062496:android:6127492ff7dac8df",
+        "android_client_info": {
+          "package_name": "com.fairstarter.fairstarterprototype"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736108062496-qfnc83b6cdrnkhfmrulupiq63dp8ot4c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANnduSfQQYeKykQDqrQq5LdwBM43VDlCY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

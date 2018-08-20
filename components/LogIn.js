@@ -6,6 +6,7 @@ export default class LogIn extends React.Component {
 
   static navigationOptions = {
     title: 'Log In',
+    headerTitleStyle: {textAlign: 'center', flex: 1},
   };
 
   state = {

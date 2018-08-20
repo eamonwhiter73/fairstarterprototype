@@ -7,7 +7,7 @@ import com.facebook.react.ReactApplication;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import org.reactnative.camera.RNCameraPackage;
-import com.spyworldxp.barcodescanner.BarcodeScannerPackage;
+//import com.spyworldxp.barcodescanner.BarcodeScannerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -32,6 +32,7 @@ import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import io.invertase.firebase.perf.RNFirebasePerformancePackage;
 import io.invertase.firebase.storage.RNFirebaseStoragePackage;
 
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class MainApplication extends Application implements ReactApplication {
             new VectorIconsPackage(),
             new RNDeviceInfo(),
             new RNCameraPackage(),
-            new BarcodeScannerPackage(),
+            //new BarcodeScannerPackage(),
         new RNFirebasePackage(),
         // add/remove these packages as appropriate
         new RNFirebaseAdMobPackage(),

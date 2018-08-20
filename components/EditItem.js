@@ -7,6 +7,7 @@ export default class EditItem extends React.Component {
 
   static navigationOptions = {
     title: 'Edit Item',
+    headerTitleStyle: {textAlign: 'center', flex: 1},
   };
 
   constructor() {
@@ -49,6 +50,8 @@ export default class EditItem extends React.Component {
                   description: this.state.description,
                   price: this.state.price,
                   quantity: this.state.quantity
+              }).then(() => {
+                Alert.alert("SAVED", "Inventory updated!");
               });
             });      
             

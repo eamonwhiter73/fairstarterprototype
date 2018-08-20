@@ -6,6 +6,7 @@ export default class SignUp extends React.Component {
 
   static navigationOptions = {
     title: 'Sign Up',
+    headerTitleStyle: {textAlign: 'center', flex: 1},
   };
 
   state = {
@@ -18,7 +19,7 @@ export default class SignUp extends React.Component {
     const { navigate } = this.props.navigation;
 
     if(this.state.email == "") {
-      Alert.alert("Please enter a valid email address, if you do not have an account please select the 'Sign Up' link below");
+      Alert.alert("Please enter a valid email address.");
     }
     else {
       firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password).then(() => {

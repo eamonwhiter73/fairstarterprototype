@@ -15,7 +15,8 @@ export default class Inventory extends React.Component {
 
   static navigationOptions = {
     title: 'Inventory Control',
-    headerLeft: null
+    headerLeft: null,
+    headerTitleStyle: {textAlign: 'center', flex: 1},
   };
 
   state = {
@@ -99,7 +100,9 @@ export default class Inventory extends React.Component {
   }
 
   myCallback = (item) => {
+    console.log("myCallback getting called-----------------------");
     if (item.email == this.state.user.email) {
+        console.log("email = email !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         return ( 
           <View style={{flex: 1, flexDirection: 'row'}}>
             <Text style={{marginTop: 10, flex: 0.8}}>SKU: {item.barcode} | Description: {item.description} | Quantity: {item.quantity} | Price: ${item.price}</Text>
@@ -143,7 +146,7 @@ export default class Inventory extends React.Component {
               const { navigate } = this.props.navigation;
 
               if(this.state.text != null) {
-                navigate('BarcodeScanner', { onNavigateBack: this.changeData.bind(this), forFromPrice: this.changePrice.bind(this) })}
+                navigate('BarcodeScanner', { onNavigateBack: this.changeData.bind(this), forFromPrice: this.changePrice.bind(this), mode: 'forScanAdd' })}
               }
             }
           >
@@ -175,7 +178,7 @@ export default class Inventory extends React.Component {
             </TouchableOpacity>
           </View>
           <InventoryList
-            callback={this.myCallback}
+            callback={this.myCallback.bind(this)}
             returnemail={this.returnEmail}
             searchSku={this.searchSkuFunc.bind(this)}
             navigation={this.props.navigation.navigate}

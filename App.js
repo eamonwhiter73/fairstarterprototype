@@ -17,9 +17,9 @@ YellowBox.ignoreWarnings(['Class RCTCxxModule']);
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 const App = createStackNavigator({
+  Inventory: { screen: Inventory },
   LogIn: { screen: LogIn },
   SignUp: { screen: SignUp },
-  Inventory: { screen: Inventory },
   BarcodeScanner: { screen: BarcodeScanner },
   EnterPrice: { screen: EnterPrice },
   EnterSku: { screen: EnterSku },

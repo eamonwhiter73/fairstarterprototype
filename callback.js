@@ -57,8 +57,14 @@ $(document).ready(function() {
 			    Accept: 'application/json',
 			}
 		}).then(response => {
+
 		  if (response.ok) {
 		    response.json().then(json => {
+
+		    	if(json.data == "Manual sale") {
+		    		alert("Manual sale complete! Return to Fairstarter!");
+		    		return;
+		    	}
 
 		    	var quant = 0;
 		    	var itemsRef = db.collection('items');
@@ -81,13 +87,10 @@ $(document).ready(function() {
 						});
 				      })
 				    })
-				    /*.then((val) => {
-				      	
-				    })*/
 				    .catch(err => {
 				      alert('Error getting documents ' + JSON.stringify(err));
 				    });
-		    });
+		    })
 		  }
 		  else {
 		  	alert("Response is not ok.");
@@ -97,47 +100,6 @@ $(document).ready(function() {
 			alert("Error: " + error);
 		});
 
-	    /*fetch(url)
-	    	.then(data => data.json())
-	    	.then(res=>{
-	    		if (!res.ok) {
-		            alert(response.statusText);
-		        }
-        		
-        		alert("Response: " + res.text());
-        	})
-	    	.catch(error=>{alert("Error: " + error)});
-
-	    /*$.ajax({
-	    	 url: "https://connect.squareup.com/v2/locations/JN6S37JH6M1Z2/transactions/" + transactionInfo[transactionId],
-	         type: "GET",
-	         headers: { "Authorization": "Bearer sq0atp-on5KcHDr0dhlbefU0EwVwg" },
-	         success: function(response) {
-		    	alert("transaction looked up");
-		        resultString += "Response: " + response + "<br>";
-		     },
-		     error: function (error) {
-        		alert(JSON.stringify(error));
-        	 }
-	    });*/
-
-	    /*$.get("https://connect.squareup.com/v2/locations/JN6S37JH6M1Z2/transactions/" + transactionInfo[transactionId], function(data, status){
-	    	alert("transaction looked up");
-	        resultString += "Data: " + data + "\nStatus: " + status + "<br>";
-	    })*/
-
-	    // Add a new document in collection "cities"
-		/*db.collection("items").doc("LA").set({
-		    name: "Los Angeles",
-		    state: "CA",
-		    country: "USA"
-		})
-		.then(function() {
-		    console.log("Document successfully written!");
-		})
-		.catch(function(error) {
-		    console.error("Error writing document: ", error);
-		});*/
 	  }
 	  else {
 	    resultString += "Transaction ID: NO CARD USED<br>";

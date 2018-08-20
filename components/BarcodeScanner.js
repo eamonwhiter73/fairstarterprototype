@@ -1,6 +1,6 @@
 import React from 'react';
 import { RNCamera } from 'react-native-camera';
-import { StyleSheet, Text, View, Alert, Permissions, Linking, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Alert, Permissions, Linking, TouchableOpacity, Platform } from 'react-native';
 import firebase from 'react-native-firebase';
 import DeepLinking from 'react-native-deep-linking';
 
@@ -23,14 +23,16 @@ export default class BarcodeScanner extends React.Component {
  
     DeepLinking.addRoute('/payment/create?data=:id', (response) => {
       // example://test
+      console.log(response + "   :::::::::: response");
       this.setState({ response });
     });
  
-    Linking.getInitialURL().then((url) => {
+    /*Linking.getInitialURL().then((url) => {
       if (url) {
+        console.log(url + " : : : : : : : URLSSSSSLLLLLL");
         Linking.openURL(url);
       }
-    }).catch(err => console.error('An error occurred', err));
+    }).catch(err => console.error('An error occurred', err));*/
 
   }
 
@@ -47,22 +49,40 @@ export default class BarcodeScanner extends React.Component {
   }
 
   ifForSearch = () => {
+    if(this.props.navigation.state.params.mode == 'forScanAdd') {
+      return
+    }
+
     if(this.props.navigation.state.params.mode != 'forSearch') {
       return (
-        <TouchableOpacity
-          style = {styles.manualcontainer}
-          onPress={() => {
-            const { navigate } = this.props.navigation;
-            if(this.props.navigation.state.params.mode == 'sell') {
-              navigate('EnterSku', { mode: 'sell' });
-            }
-            else {
-              navigate('EnterSku', { forFromPrice: this.props.navigation.state.params.forFromPrice, onNavigateBack: this.props.navigation.state.params.onNavigateBack});
-            }
-          }}
-        >
-          <Text style = {styles.button}>MANUAL ENTRY</Text>
-        </TouchableOpacity>
+        <View>
+          <TouchableOpacity
+            style = {styles.manualcontainer}
+            onPress={() => {
+              const { navigate } = this.props.navigation;
+              if(this.props.navigation.state.params.mode == 'sell') {
+                navigate('EnterSku', { mode: 'sell' });
+              }
+              else {
+                //WILL NEVER BE REACHED! CLEAN UP!//
+                navigate('EnterSku', { forFromPrice: this.props.navigation.state.params.forFromPrice, onNavigateBack: this.props.navigation.state.params.onNavigateBack});
+              }
+            }}
+          >
+            <Text style = {styles.button}>ENTER SKU</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style = {styles.manualcontainer}
+            onPress={() => {
+              const { navigate } = this.props.navigation;
+              if(this.props.navigation.state.params.mode == 'sell') {
+                navigate('EnterPrice', { mode: 'manual' });
+              }
+            }}
+          >
+            <Text style = {styles.button}>MANUAL SALE</Text>
+          </TouchableOpacity>
+        </View>
       )
     }
   }
@@ -112,7 +132,7 @@ export default class BarcodeScanner extends React.Component {
 
                 dataParameter = {
                   amount_money: {
-                    amount:        Number(price) * 100,
+                    amount: Number(price) * 100,
                     currency_code: "USD",
                   },
 
@@ -128,8 +148,17 @@ export default class BarcodeScanner extends React.Component {
                     supported_tender_types: ["CREDIT_CARD","CASH","OTHER","SQUARE_GIFT_CARD","CARD_ON_FILE"],
                   }
                 };
+
+                var urlL = "";
                 
-                Linking.openURL("square-commerce-v1://payment/create?data=" + encodeURIComponent(JSON.stringify(dataParameter))).then(() => {
+                if(Platform.OS === 'ios') {
+                  urlL = "square-commerce-v1://payment/create?data=" + encodeURIComponent(JSON.stringify(dataParameter));
+                }
+                else {
+                  urlL = "square-commerce-v1://payment/"+Number(price)*100+"/"+doc.data().barcode;
+                }
+
+                Linking.openURL(urlL).then(() => {
                   navigate('Inventory');
                 }).catch(err => console.log('There was an error:' + err));
             });
